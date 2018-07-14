@@ -15,7 +15,7 @@ class S3ApiTest extends WordSpec with Matchers with MockFactory with ScalatestRo
     tokenService.getAssumeRoleWithWebIdentity _ when (*, *, *, *) returns Some(AssumeRoleWithWebIdentityResponse())
     tokenService.getSessionToken _ when 1000000000 returns None
     tokenService.getSessionToken _ when * returns Some(GetSessionTokenResponse())
-    new S3Api(tokenService).routes
+    new STSApi(tokenService).routes
   }
 
   "S3 api" should {

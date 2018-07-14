@@ -1,8 +1,10 @@
 package ing.wbaa.gargoyle.sts.service
 
+import java.util.Date
+
 import scala.collection.mutable
 
-case class UserInfo(userId: String, secretKey: String, groups: Seq[String], arn: String)
+case class UserInfo(userId: String, secretKey: String, groups: Seq[String], arn: String, expiry: Date)
 
 /**
  * User service providing information about users
