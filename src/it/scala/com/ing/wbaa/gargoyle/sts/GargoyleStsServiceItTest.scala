@@ -9,7 +9,7 @@ import org.scalatest._
 
 import scala.concurrent.Future
 
-class StsServiceItTest extends AsyncWordSpec with DiagrammedAssertions with AWSSTSClient {
+class GargoyleStsServiceItTest extends AsyncWordSpec with DiagrammedAssertions with AWSSTSClient {
   private[this] final implicit val system: ActorSystem = ActorSystem.create("test-system")
 
   // Settings for tests:
@@ -22,7 +22,7 @@ class StsServiceItTest extends AsyncWordSpec with DiagrammedAssertions with AWSS
 
   // Fixture for starting and stopping a test proxy that tests can interact with.
   def withTestStsService(testCode: Authority => Assertion): Future[Assertion] = {
-    val testProxy = StsService(gargoyleHttpSettings)
+    val testProxy = GargoyleStsService(gargoyleHttpSettings)
     testProxy.bind
       .map { binding =>
         val authority = Authority(Host(binding.localAddress.getAddress), binding.localAddress.getPort)

@@ -1,6 +1,8 @@
 package com.ing.wbaa.gargoyle.sts.oauth
 
-import scala.concurrent.Future
+import java.time.Instant
+
+import scala.concurrent.{ ExecutionContext, Future }
 
 case class VerifiedToken(
     token: String,
@@ -9,7 +11,7 @@ case class VerifiedToken(
     username: String,
     email: String,
     roles: Seq[String],
-    expirationDate: Long)
+    expiration: Instant)
 
 trait OAuth2TokenVerifier {
   def verifyToken(token: BearerToken): Future[VerifiedToken]
@@ -18,12 +20,10 @@ trait OAuth2TokenVerifier {
 /**
  * Test implementation of OAuth2 token verifier
  */
-class OAuth2TokenVerifierImpl extends OAuth2TokenVerifier {
-
-  import scala.concurrent.ExecutionContext.Implicits.global
+class OAuth2TokenVerifierImpl(implicit executionContext: ExecutionContext) extends OAuth2TokenVerifier {
 
   override def verifyToken(token: BearerToken): Future[VerifiedToken] = {
-    if ("validToken".equals(token.value)) Future[VerifiedToken](VerifiedToken(token.value, "id", "name", "username", "email", Seq.empty, 0))
+    if ("validToken".equals(token.value)) Future[VerifiedToken](VerifiedToken(token.value, "id", "name", "username", "email", Seq.empty, Instant.EPOCH))
     else Future.failed(new Exception("invalid token"))
   }
 }

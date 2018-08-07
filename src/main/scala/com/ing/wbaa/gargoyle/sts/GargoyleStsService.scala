@@ -3,20 +3,20 @@ package com.ing.wbaa.gargoyle.sts
 import akka.Done
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
-import com.ing.wbaa.gargoyle.sts.api.{ S3Api, UserApi }
+import com.ing.wbaa.gargoyle.sts.api.UserApi
 import com.ing.wbaa.gargoyle.sts.config.GargoyleHttpSettings
 import com.ing.wbaa.gargoyle.sts.oauth.OAuth2TokenVerifierImpl
-import com.ing.wbaa.gargoyle.sts.service.{ TokenServiceImpl, UserServiceImpl }
+import com.ing.wbaa.gargoyle.sts.service.{ StsService, TokenServiceImpl, UserServiceImpl }
 import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.{ Failure, Success }
 
-class StsService private[StsService] (httpSettings: GargoyleHttpSettings)(implicit system: ActorSystem)
+class GargoyleStsService private[GargoyleStsService] (httpSettings: GargoyleHttpSettings)(implicit system: ActorSystem)
   extends LazyLogging
   with UserApi with UserServiceImpl {
 
@@ -25,7 +25,7 @@ class StsService private[StsService] (httpSettings: GargoyleHttpSettings)(implic
   // The routes we serve
   final val allRoutes: Route = cors() {
     userRoutes ~
-      new S3Api(new OAuth2TokenVerifierImpl(), new TokenServiceImpl()).routes
+      new StsService(new OAuth2TokenVerifierImpl(), new TokenServiceImpl()).stsApiRoutes
   }
 
   // Details about the server binding.
@@ -48,14 +48,14 @@ class StsService private[StsService] (httpSettings: GargoyleHttpSettings)(implic
   }
 }
 
-object StsService {
-  def apply()(implicit system: ActorSystem): StsService = apply(None)
+object GargoyleStsService {
+  def apply()(implicit system: ActorSystem): GargoyleStsService = apply(None)
 
-  def apply(httpSettings: GargoyleHttpSettings)(implicit system: ActorSystem): StsService =
+  def apply(httpSettings: GargoyleHttpSettings)(implicit system: ActorSystem): GargoyleStsService =
     apply(httpSettings = Some(httpSettings))
 
-  private[this] def apply(httpSettings: Option[GargoyleHttpSettings])(implicit system: ActorSystem): StsService = {
+  private[this] def apply(httpSettings: Option[GargoyleHttpSettings])(implicit system: ActorSystem): GargoyleStsService = {
     val gargoyleHttpSettings = httpSettings.getOrElse(GargoyleHttpSettings(system))
-    new StsService(gargoyleHttpSettings)
+    new GargoyleStsService(gargoyleHttpSettings)
   }
 }

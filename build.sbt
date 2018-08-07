@@ -15,8 +15,8 @@ scalacOptions := Seq(
   "-encoding", "utf-8",
   "-target:jvm-1.8",
   "-feature",
-  "-Xlint"//,
-//  "-Xfatal-warnings"
+  "-Xlint",
+  "-Xfatal-warnings"
 )
 
 // Experimental: improved update resolution.
@@ -28,6 +28,7 @@ val akkaVersion = "10.1.3"
 val keycloakVersion = "4.1.0.Final"
 
 libraryDependencies ++= Seq(
+  "org.scala-lang.modules" %% "scala-java8-compat" % "0.9.0",
   "com.typesafe.akka" %% "akka-http" % akkaVersion,
   "com.typesafe.akka" %% "akka-stream" % "2.5.14",
   "ch.megard" %% "akka-http-cors" % "0.3.0",

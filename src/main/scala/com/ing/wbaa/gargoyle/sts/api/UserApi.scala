@@ -24,7 +24,7 @@ trait UserApi {
   def verifyUser: Route = logRequestResult("debug") {
     path("isCredentialActive") {
       get {
-        parameters('accessKey, 'sessionToken) { (accessKey, sessionToken) =>
+        parameters(('accessKey, 'sessionToken)) { (accessKey, sessionToken) =>
           onSuccess(isCredentialActive(accessKey, sessionToken)) { isActive =>
             complete(if (isActive) StatusCodes.OK else StatusCodes.Forbidden)
           }
@@ -36,7 +36,7 @@ trait UserApi {
   def getUser: Route = logRequestResult("debug") {
     path("userInfo") {
       get {
-        parameters('accessKey, 'sessionToken) {
+        parameters(('accessKey, 'sessionToken)) {
           (accessKey, sessionToken) =>
             onSuccess(getUserInfo(accessKey, sessionToken)) {
               case Some(userInfo) => complete(userInfo)

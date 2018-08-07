@@ -1,6 +1,10 @@
 package com.ing.wbaa.gargoyle.sts.service
 
-import org.scalatest.{ Matchers, WordSpec }
+import java.util.concurrent.TimeUnit
+
+import org.scalatest.{Matchers, WordSpec}
+
+import scala.concurrent.duration.FiniteDuration
 
 class TokenServiceTest extends WordSpec with Matchers {
 
@@ -9,11 +13,11 @@ class TokenServiceTest extends WordSpec with Matchers {
   //TODO it is a mock test
   "Token service" should {
     "get an assume role" in {
-      tokenService.getAssumeRoleWithWebIdentity("arn", "roleSession", "token", 100).get.toString.isEmpty shouldBe false
+      tokenService.getAssumeRoleWithWebIdentity("arn", "roleSession", "token", FiniteDuration(100, TimeUnit.SECONDS)).get.toString.isEmpty shouldBe false
     }
 
     "get a session token" in {
-      tokenService.getSessionToken(1000).get.toString.isEmpty shouldBe false
+      tokenService.getSessionToken(FiniteDuration(1000, TimeUnit.SECONDS)).get.toString.isEmpty shouldBe false
     }
 
   }
