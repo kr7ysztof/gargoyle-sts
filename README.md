@@ -3,6 +3,8 @@
 [![](https://images.microbadger.com/badges/image/kr7ysztof/gargoyle-sts:master.svg)](https://microbadger.com/images/kr7ysztof/gargoyle-sts:master)
 [![](https://images.microbadger.com/badges/version/kr7ysztof/gargoyle-sts:master.svg)](https://microbadger.com/images/kr7ysztof/gargoyle-sts:master)
 
+The project has been moved to https://github.com/ing-bank/airlock-sts
+
 # Gargoyle STS
 
 STS service for [gargoyle-s3proxy](https://github.com/arempter/gargoyle-s3proxy) project.
